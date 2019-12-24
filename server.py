@@ -3,8 +3,6 @@ import json
 import os
 import requests
 import time
-import pickle
-import xmltodict
 
 app = Flask(__name__)
 port = int(os.environ["PATH"])
