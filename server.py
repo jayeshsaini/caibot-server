@@ -5,7 +5,7 @@ import requests
 import time
 
 app = Flask(__name__)
-port = int(os.environ["PATH"])
+port = int(os.environ.get("PORT", 5000))
 
 @app.route('/')
 def index():
