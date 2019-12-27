@@ -95,6 +95,17 @@ def startkit():
         reply = 'VisualInspection'
     elif kit == "Smart Asset Monitoring":
         reply = 'Smart Asset Monitoring'
+
+        payload = {
+            'text': 'Smart Asset Monitoring'
+        }
+        url = 'https://e1438a78.ngrok.io/startkit'
+        reponse = requests.post(url, data=json.dumps(payload))
+
+        if reponse.status_code == 200:
+            reply = 'Started Kit'
+
+
     elif kit == "Connected Manufacting":
         reply = 'cm'
 
