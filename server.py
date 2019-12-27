@@ -86,14 +86,14 @@ def orderNo(OrderNo):
         )
 
 @app.route('/startkit', methods = ['POST'])
-def startKit():
+def startkit():
     if request.method == 'POST':
         print(request.json)
         print(type(request.json))
         kit = request.json['nlp']['entities']['kit'][0]['raw']
     if kit == "Visual Inspection":
         reply = 'VisualInspection'
-    elif kit == "sam":
+    elif kit == "Smart Asset Monitoring":
         reply = 'Smart Asset Monitoring'
     elif kit == "Connected Manufacting":
         reply = 'cm'
