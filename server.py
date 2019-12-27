@@ -90,7 +90,7 @@ def startKit():
     if request.method == 'POST':
         print(request.json)
         print(type(request.json))
-        kit = request.json['nlp']['entities']['kit']['0']['raw']
+        kit = request.json['nlp']['entities']['kit'][0]['raw']
     if kit == "Visual Inspection":
         reply = 'VisualInspection'
     elif kit == "sam":
