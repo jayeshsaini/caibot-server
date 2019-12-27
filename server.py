@@ -100,7 +100,9 @@ def startkit():
             'text': 'Smart Asset Monitoring'
         }
         url = 'https://e1438a78.ngrok.io/startkit'
-        reponse = requests.post(url, data=json.dumps(payload))
+        headers = {'Content-Type': 'application/json'}
+        
+        reponse = requests.post(url, data=json.dumps(payload), headers=headers)
 
         if reponse.status_code == 200:
             reply = 'Started Kit'
