@@ -86,7 +86,7 @@ def orderNo(OrderNo):
         )
 
 @app.route('/startkit', methods = ['POST'])
-def startKit(kit):
+def startKit():
     if request.method == 'POST':
         print(request.json)
         kit = request.json['nlp']['entities']['kit']['value']
