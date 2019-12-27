@@ -100,7 +100,7 @@ def startkit():
             'text': 'Smart Asset Monitoring'
         }
         url = 'https://e1438a78.ngrok.io/startkit'
-        headers = {'Accept-Encoding': 'UTF-8', 'Content-Type': 'application/json'}
+        headers = {'Content-Type': 'application/json'}
         
         reponse = requests.post(url, data=json.dumps(payload), headers=headers)
 
