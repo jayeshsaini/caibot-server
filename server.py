@@ -89,7 +89,7 @@ def orderNo(OrderNo):
 def startKit():
     if request.method == 'POST':
         print(request.json)
-        kit = request.json['nlp']['entities']['kit']['value']
+        kit = request.json['conversation']['nlp']['entities']['kit']['value']
     if kit == "Visual Inspection":
         reply = 'VisualInspection'
     elif kit == "sam":
