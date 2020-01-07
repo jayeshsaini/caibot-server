@@ -99,7 +99,7 @@ def startkit():
         payload = {
             'text': 'Smart Asset Monitoring'
         }
-        url = 'https://e1438a78.ngrok.io/startkit'
+        url = 'https://fastdigital.localtunnel.me/startkit'
         headers = {'Content-Type': 'application/json'}
         
         reponse = requests.post(url, data=json.dumps(payload), headers=headers)
