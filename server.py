@@ -54,6 +54,9 @@ def count_assembly():
 
 @app.route('/orderNo', methods = ['POST'])
 def orderNo():
+    req = json.loads(request.get_data())
+    OrderNo = req["nlp"]["source"]
+
     OrderNo = '00000' + str(OrderNo)
     hdr = {'Authorization': 'Basic cm5haXJhbmQ6ZmQ0Njg4NQ=='}
     url = 'https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZFD4_INSP_REPORT_SRV'
