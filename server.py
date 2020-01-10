@@ -15,7 +15,7 @@ def index():
 def count_assembly():
     if request.method == 'POST':
         print(request.json)
-        assembly = request.json['conversation']['memory']['assembly']['value']
+        assembly = request.json["nlp"]["source"]
     if assembly == "Perfect" or assembly == "perfect" or assembly == "Ok" or assembly == "ok":
         assembly = 'Ok'
     elif assembly == "Missing" or assembly == "missing":
