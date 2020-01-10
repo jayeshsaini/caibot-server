@@ -52,7 +52,7 @@ def count_assembly():
             ]
         )
 
-@app.route('/orderNo/<OrderNo>', methods = ['GET'])
+@app.route('/orderNo', methods = ['POST'])
 def orderNo(OrderNo):
     OrderNo = '00000' + str(OrderNo)
     hdr = {'Authorization': 'Basic cm5haXJhbmQ6ZmQ0Njg4NQ=='}
@@ -62,8 +62,7 @@ def orderNo(OrderNo):
 
     r = requests.get(url, headers = hdr)
     if r.status_code != 200:
-        reply = 'Did not get any reply from SAP...'
-        print(reply)
+        reply = 'Sorry, I don\'t think that is a valid Order No'
     else:
         result = json.loads(r.content)
         temp = result['d']['results'][0]
@@ -78,6 +77,46 @@ def orderNo(OrderNo):
     return jsonify(
         status = 200,
         replies = [
+            {
+                'type': 'text',
+                'content': reply
+                }
+            ]
+        )
+
+@app.route('/PMOrder', methods = ['POST'])
+def PMOrder():
+    req = json.loads(request.get_data())
+    Status = req["nlp"]["source"]
+    if Status == "Open":
+        Status = 'OPEN'
+    elif Status == "Close":
+        Status = 'CLOSE'
+        
+    url = 'https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZGW_CREATE_PMO_SRV'
+    url = url + '/WorkOrderSet'
+    url = url + '?$filter=Response%20eq%20%27' + Status + '%27&$format=json&$orderby=WoNum%20desc'
+
+    hdr = {'Authorization': 'Basic cm5haXJhbmQ6ZmQ0Njg4NQ=='}
+    r = requests.get(url, headers = hdr)
+
+    if r.status_code != 200:
+            reply = "Sorry, Wrong input"
+    else:
+        response = json.loads(r.content)
+        data = response['d']['results'][0]
+        WoNum = data.get('WoNum')
+        WoDate = data.get('WoCreateDate')
+        WoDate = WoDate[6:]
+        WoDate = int(WoDate[:10])
+        WoDate = time.ctime(WoDate)
+        desc = data.get('ShortDesc')
+        plant = data.get('Plant')
+        reply = 'Plant Maintenance Order: ' + WoNum + ', Created on: ' + WoDate + ', Plant: ' + plant + ', Reason: ' + desc
+        
+        return jsonify(
+            status = 200,
+            replies = [
             {
                 'type': 'text',
                 'content': reply
