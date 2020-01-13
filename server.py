@@ -127,31 +127,25 @@ def PMOrder():
             ]
         )
 
-@app.route('/startkit', methods = ['POST'])
+@app.route('/fan-fail', methods = ['POST'])
 def startkit():
     if request.method == 'POST':
         print(request.json)
-        print(type(request.json))
         kit = request.json['nlp']['entities']['kit'][0]['raw']
-    if kit == "Visual Inspection":
-        reply = 'VisualInspection'
-    elif kit == "Smart Asset Monitoring":
-        reply = 'Smart Asset Monitoring'
+    if kit == "primary fan" or kit == 'fan':
+        reply = 'fan'
 
-        payload = {
-            'text': 'Smart Asset Monitoring'
-        }
-        url = 'https://fastdigital.localtunnel.me/startkit'
-        headers = {'Content-Type': 'application/json'}
+
+    payload = {
+        'text': 'fan'
+    }
+    url = 'https://fastdigital.localtunnel.me/fan-fail'
+    headers = {'Content-Type': 'application/json'}
         
-        reponse = requests.post(url, data=json.dumps(payload), headers=headers)
+    reponse = requests.post(url, data=json.dumps(payload), headers=headers)
 
-        if reponse.status_code == 200:
-            reply = 'Started Kit'
-
-
-    elif kit == "Connected Manufacting":
-        reply = 'cm'
+    if reponse.status_code == 200:
+        reply = 'Primary Fan is off'
 
     print(reply)
 
