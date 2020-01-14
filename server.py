@@ -142,12 +142,12 @@ def startkit():
     url = 'https://fastdigital.localtunnel.me/fan-fail'
     headers = {'Content-Type': 'application/json'}
         
-    reponse = requests.post(url, data=json.dumps(payload), headers=headers)
-
-    reply = 'Kit is not connected. Please check and try again.'
+    reponse = requests.post(url, data=json.dumps(payload), headers=headers, verify=False)
 
     if reponse.status_code == 200:
         reply = 'Primary Fan is off'
+    else:
+        reply = 'Kit is not connected. Please check and try again.'
     
     print(reply)
 
