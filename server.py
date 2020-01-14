@@ -144,11 +144,11 @@ def startkit():
         
     reponse = requests.post(url, data=json.dumps(payload), headers=headers)
 
+    reply = 'Kit is not connected. Please check and try again.'
+
     if reponse.status_code == 200:
         reply = 'Primary Fan is off'
-    else:
-        reply = 'Kit is not connected. Please check and try again.'
-
+    
     print(reply)
 
     return jsonify(
