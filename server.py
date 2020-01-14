@@ -131,7 +131,7 @@ def PMOrder():
 def startkit():
     if request.method == 'POST':
         print(request.json)
-        kit = request.json['nlp']['entities']['kit'][0]['raw']
+        kit = request.json['nlp']['entities']['fan'][0]['raw']
     if kit == "primary fan" or kit == 'fan':
         reply = 'fan'
 
