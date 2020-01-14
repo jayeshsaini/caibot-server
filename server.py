@@ -146,6 +146,8 @@ def startkit():
 
     if reponse.status_code == 200:
         reply = 'Primary Fan is off'
+    else:
+        reply = 'Kit is not connected. Please check and try again.'
 
     print(reply)
 
