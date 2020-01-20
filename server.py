@@ -26,7 +26,7 @@ def count_assembly():
     elif assembly == "Misaligned" or assembly == "misaligned":
         assembly = "Misaligned"
 
-    formatdate = datetime.strptime(date, '%Y-%m-%dT00:00:00')
+    formatdate = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%f+00:00')
 
     reply = "Didn't find any data for this type in backend"
 
@@ -44,7 +44,7 @@ def count_assembly():
                 switches = str(r.content, 'utf-8')
                 
         elif time =="today":
-            todaydate = datetime.strftime(date, '%Y-%m-%dT00:00:00')
+            todaydate = datetime.strftime(formatdate, '%Y-%m-%dT00:00:00')
             url = url + "/$count?$filter=Assembly eq '" + assembly + "' and Crdate eq'" + todaydate + "'"
 
             r = requests.get(url, headers = hdr)
