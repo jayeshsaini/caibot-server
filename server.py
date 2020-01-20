@@ -47,23 +47,22 @@ def count_assembly():
                 
         elif time =="today":
             todaydate = datetime.strftime(formatdate, '%Y-%m-%dT00:00:00')
-            url = url + "/$count?$filter=Assembly eq '" + assembly + "' and Crdate eq'" + todaydate + "'"
+            url = url + "/$count?$filter=Assembly eq '" + assembly + "' and Crdate eq datetime'" + todaydate + "'"
 
             r = requests.get(url, headers = hdr)
             if r.status_code != 200:
                 reply = 'Did not get any reply from SAP...'
             else:
-                print(r.content)
                 switches = str(r.content, 'utf-8')
         
-
-    if assembly == "Ok":
-        reply = 'There are ' + switches + ' switches with perfectly aligned gaskets'
-    elif assembly == "Misaligned":
-        reply = switches + ' switches have gaskets misaligned'
-    elif assembly == "Missing":
-        reply = switches + ' switches have gaskets missing'
-    print(reply)    
+    if switches != "":
+        if assembly == "Ok":
+            reply = 'There are ' + switches + ' switches with perfectly aligned gaskets'
+        elif assembly == "Misaligned":
+            reply = switches + ' switches have gaskets misaligned'
+        elif assembly == "Missing":
+            reply = switches + ' switches have gaskets missing'
+        print(reply)    
 
     return jsonify(
         status = 200,
