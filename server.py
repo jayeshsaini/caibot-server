@@ -17,7 +17,7 @@ def count_assembly():
     if request.method == 'POST':
         print(request.json)
         assembly = request.json["conversation"]["memory"]["assembly"]["raw"]
-        time = request.json["nlp"]["entities"]["time-period"]["value"]
+        time = request.json["nlp"]["entities"]["time-period"][0]["value"]
         date = request.json["nlp"]["timestamp"]
     if assembly == "Perfect" or assembly == "perfect" or assembly == "Ok" or assembly == "ok":
         assembly = 'Ok'
