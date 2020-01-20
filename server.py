@@ -3,6 +3,7 @@ import json
 import os
 import requests
 import time
+from datetime import datetime
 
 app = Flask(__name__)
 port = int(os.environ.get("PORT", 5000))
@@ -15,7 +16,9 @@ def index():
 def count_assembly():
     if request.method == 'POST':
         print(request.json)
-        assembly = request.json["nlp"]["source"]
+        assembly = request.json["conversation"]["memory"]["assembly"]["raw"]
+        time = request.json["nlp"]["entities"]["time-period"]["value"]
+        date = request.json["nlp"]["timestamp"]
     if assembly == "Perfect" or assembly == "perfect" or assembly == "Ok" or assembly == "ok":
         assembly = 'Ok'
     elif assembly == "Missing" or assembly == "missing":
@@ -23,24 +26,41 @@ def count_assembly():
     elif assembly == "Misaligned" or assembly == "misaligned":
         assembly = "Misaligned"
 
-    if assembly == "Ok" or assembly == "Missing" or assembly == "Misaligned":
-        hdr = {'Authorization': 'Basic cm5haXJhbmQ6ZmQ0Njg4NQ=='}
-        url = 'https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZFD4_INSP_RESULT_SRV'
-        url = url + '/InspectionSet'
-        url = url + '/$count?$filter=Assembly%20eq%20%27' + assembly + '%27'
+    formatdate = datetime.strptime(date, '%Y-%m-%dT00:00:00')
 
-        r = requests.get(url, headers = hdr)
-        if r.status_code != 200:
-            reply = 'Did not get any reply from SAP...'
-        else:
-            switches = str(r.content, 'utf-8')
-            if assembly == "Ok":
-                reply = 'There are ' + switches + ' switches with perfectly aligned gaskets'
-            elif assembly == "Misaligned":
-                reply = switches + ' switches have gaskets misaligned'
-            elif assembly == "Missing":
-                reply = switches + ' switches have gaskets missing'
-            print(reply)
+    reply = "Didn't find any data for this type in backend"
+
+    hdr = {'Authorization': 'Basic cm5haXJhbmQ6ZmQ0Njg4NQ=='}
+    url = "https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZFD4_INSP_RESULT_SRV/InspectionSet"
+    
+    if assembly == "Ok" or assembly == "Missing" or assembly == "Misaligned":
+        if time == "all":
+            url = url + "/$count?$filter=Assembly eq '" + assembly + "'"
+
+            r = requests.get(url, headers = hdr)
+            if r.status_code != 200:
+                reply = 'Did not get any reply from SAP...'
+            else:
+                switches = str(r.content, 'utf-8')
+                
+        elif time =="today":
+            todaydate = datetime.strftime(date, '%Y-%m-%dT00:00:00')
+            url = url + "/$count?$filter=Assembly eq '" + assembly + "' and Crdate eq'" + todaydate + "'"
+
+            r = requests.get(url, headers = hdr)
+            if r.status_code != 200:
+                reply = 'Did not get any reply from SAP...'
+            else:
+                switches = str(r.content, 'utf-8')
+        
+
+    if assembly == "Ok":
+        reply = 'There are ' + switches + ' switches with perfectly aligned gaskets'
+    elif assembly == "Misaligned":
+        reply = switches + ' switches have gaskets misaligned'
+    elif assembly == "Missing":
+        reply = switches + ' switches have gaskets missing'
+    print(reply)    
 
     return jsonify(
         status = 200,
@@ -59,9 +79,8 @@ def orderNo():
 
     OrderNo = '00000' + str(OrderNo)
     hdr = {'Authorization': 'Basic cm5haXJhbmQ6ZmQ0Njg4NQ=='}
-    url = 'https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZFD4_INSP_REPORT_SRV'
-    url = url + '/InspectionReportSet'
-    url = url + '?$filter=Orderno%20eq%20%27' + OrderNo + '%27&$format=json'
+    url = "https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZFD4_INSP_REPORT_SRV/InspectionReportSet"
+    url = url + "?$filter=Orderno eq '" + OrderNo + "&$format=json"
 
     r = requests.get(url, headers = hdr)
     if r.status_code != 200:
@@ -96,9 +115,8 @@ def PMOrder():
     elif Status == "Close":
         Status = 'CLOSE'
         
-    url = 'https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZGW_CREATE_PMO_SRV'
-    url = url + '/WorkOrderSet'
-    url = url + '?$filter=Response%20eq%20%27' + Status + '%27&$format=json&$orderby=WoNum%20desc'
+    url = "https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZGW_CREATE_PMO_SRV/WorkOrderSet"
+    url = url + "?$filter=Response eq '" + Status + "'&$format=json&$orderby=WoNum desc"
 
     hdr = {'Authorization': 'Basic cm5haXJhbmQ6ZmQ0Njg4NQ=='}
     r = requests.get(url, headers = hdr)
