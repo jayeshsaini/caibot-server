@@ -30,6 +30,8 @@ def count_assembly():
 
     reply = "Didn't find any data for this type in backend"
 
+    switches = ""
+
     hdr = {'Authorization': 'Basic cm5haXJhbmQ6ZmQ0Njg4NQ=='}
     url = "https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZFD4_INSP_RESULT_SRV/InspectionSet"
     
@@ -51,6 +53,7 @@ def count_assembly():
             if r.status_code != 200:
                 reply = 'Did not get any reply from SAP...'
             else:
+                print(r.content)
                 switches = str(r.content, 'utf-8')
         
 
