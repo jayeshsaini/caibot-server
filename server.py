@@ -115,7 +115,7 @@ def orderNo():
     OrderNo = '00000' + str(OrderNo)
     hdr = {'Authorization': 'Basic cm5haXJhbmQ6ZmQ0Njg4NQ=='}
     url = "https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZFD4_INSP_REPORT_SRV/InspectionReportSet"
-    url = url + "?$filter=Orderno eq '" + OrderNo + "&$format=json"
+    url = url + "?$filter=Orderno eq '" + OrderNo + "'&$format=json"
 
     r = requests.get(url, headers = hdr)
     if r.status_code != 200:
