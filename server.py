@@ -3,7 +3,7 @@ import json
 import os
 import requests
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 port = int(os.environ.get("PORT", 5000))
@@ -46,6 +46,39 @@ def count_assembly():
                 switches = str(r.content, 'utf-8')
                 
         elif time =="today":
+            todaydate = datetime.strftime(formatdate, '%Y-%m-%dT00:00:00')
+            url = url + "/$count?$filter=Assembly eq '" + assembly + "' and Crdate eq datetime'" + todaydate + "'"
+
+            r = requests.get(url, headers = hdr)
+            if r.status_code != 200:
+                reply = 'Did not get any reply from SAP...'
+            else:
+                switches = str(r.content, 'utf-8')
+
+        elif time =="yesterday":
+            formatdate = formatdate - timedelta(days=1)
+            todaydate = datetime.strftime(formatdate, '%Y-%m-%dT00:00:00')
+            url = url + "/$count?$filter=Assembly eq '" + assembly + "' and Crdate eq datetime'" + todaydate + "'"
+
+            r = requests.get(url, headers = hdr)
+            if r.status_code != 200:
+                reply = 'Did not get any reply from SAP...'
+            else:
+                switches = str(r.content, 'utf-8')
+
+        elif time =="last week":
+            formatdate = formatdate - timedelta(days=7)
+            todaydate = datetime.strftime(formatdate, '%Y-%m-%dT00:00:00')
+            url = url + "/$count?$filter=Assembly eq '" + assembly + "' and Crdate eq datetime'" + todaydate + "'"
+
+            r = requests.get(url, headers = hdr)
+            if r.status_code != 200:
+                reply = 'Did not get any reply from SAP...'
+            else:
+                switches = str(r.content, 'utf-8')
+
+        elif time =="last month":
+            formatdate = formatdate - timedelta(days=30)
             todaydate = datetime.strftime(formatdate, '%Y-%m-%dT00:00:00')
             url = url + "/$count?$filter=Assembly eq '" + assembly + "' and Crdate eq datetime'" + todaydate + "'"
 
