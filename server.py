@@ -124,7 +124,7 @@ def orderNo():
 
     if r.status_code != 200:
         reply = "Cannot reach backend. Kindly check your S/4 HANA system."
-    elif result['d']['results'][0]=="":
+    elif result['d']['results']==[]:
         reply = 'Sorry, I don\'t think that is a valid Order No'
     else:
         result = json.loads(r.content)
