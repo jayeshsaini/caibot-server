@@ -120,7 +120,7 @@ def orderNo():
     url = url + "?$filter=Orderno eq '" + OrderNo + "'&$format=json"
 
     r = requests.get(url, headers = hdr)
-    if r.status_code != 200 or r.content['d']['results']==[]:
+    if r.status_code != 200 or r.content['d']['results'][0]=="":
         reply = 'Sorry, I don\'t think that is a valid Order No'
     else:
         result = json.loads(r.content)
