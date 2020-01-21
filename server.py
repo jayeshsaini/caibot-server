@@ -120,7 +120,11 @@ def orderNo():
     url = url + "?$filter=Orderno eq '" + OrderNo + "'&$format=json"
 
     r = requests.get(url, headers = hdr)
-    if r.status_code != 200 or r.content['d']['results'][0]=="":
+    result = json.loads(r.content)
+
+    if r.status_code != 200:
+        reply = "Cannot reach backend. Kindly check your S/4 HANA system."
+    elif result['d']['results'][0]=="":
         reply = 'Sorry, I don\'t think that is a valid Order No'
     else:
         result = json.loads(r.content)
