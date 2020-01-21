@@ -12,6 +12,7 @@ port = int(os.environ.get("PORT", 5000))
 def index():
     return "<h2>SAP Conversational AI Agent<h2>"
 
+#Inspection Report - Assembly
 @app.route('/count_assembly', methods=['POST'])
 def count_assembly():
     if request.method == 'POST':
@@ -107,6 +108,7 @@ def count_assembly():
             ]
         )
 
+#Production Order details
 @app.route('/orderNo', methods = ['POST'])
 def orderNo():
     req = json.loads(request.get_data())
@@ -118,7 +120,7 @@ def orderNo():
     url = url + "?$filter=Orderno eq '" + OrderNo + "'&$format=json"
 
     r = requests.get(url, headers = hdr)
-    if r.status_code != 200:
+    if r.status_code != 200 or r.content['d']['results']==[]:
         reply = 'Sorry, I don\'t think that is a valid Order No'
     else:
         result = json.loads(r.content)
@@ -141,7 +143,8 @@ def orderNo():
             ]
         )
 
-@app.route('/PMOrder', methods = ['POST'])
+#Plant Maintenance Order details
+@app.route('/PMOrder', methods = ['POST'])          
 def PMOrder():
     req = json.loads(request.get_data())
     Status = req["nlp"]["source"]
