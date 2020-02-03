@@ -199,7 +199,7 @@ def startkit():
     payload = {
         'text': 'fan'
     }
-    url = 'https://pi-eur5.localhost.run/fan-fail'
+    url = 'https://fastdigital.tunnel.datahub.at/fan-fail'
     headers = {'Content-Type': 'application/json'}
         
     try:
