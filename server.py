@@ -206,6 +206,8 @@ def startkit():
         reponse = requests.post(url, data=json.dumps(payload), headers=headers, verify=False)
         if reponse.status_code == 200:
             reply = 'Primary Fan is off'
+        else:
+            reply = 'Cannot reach IoT Device. Please check with the Developer.'
     except requests.exceptions.RequestException:
         reply = 'Kit is not connected. Please check and try again.'
     
