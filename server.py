@@ -5,6 +5,8 @@ import requests
 import time
 from datetime import datetime, timedelta
 
+auth_cred = "Basic cm5haXJhbmQ6V0BuZGVyZXI1MzAw"    #Rahul-D4S
+
 app = Flask(__name__)
 port = int(os.environ.get("PORT", 5000))
 
@@ -33,7 +35,7 @@ def count_assembly():
 
     switches = ""
 
-    hdr = {'Authorization': 'Basic cm5haXJhbmQ6ZmQ0Njg4NQ=='}
+    hdr = {'Authorization': auth_cred}
     url = "https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZFD4_INSP_RESULT_SRV/InspectionSet"
     
     if assembly == "Ok" or assembly == "Missing" or assembly == "Misaligned":
@@ -115,7 +117,7 @@ def orderNo():
     OrderNo = req["nlp"]["source"]
 
     OrderNo = '00000' + str(OrderNo)
-    hdr = {'Authorization': 'Basic cm5haXJhbmQ6ZmQ0Njg4NQ=='}
+    hdr = {'Authorization': auth_cred}
     url = "https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZFD4_INSP_REPORT_SRV/InspectionReportSet"
     url = url + "?$filter=Orderno eq '" + OrderNo + "'&$format=json"
 
@@ -160,7 +162,7 @@ def PMOrder():
     url = "https://appsnadevtest.apimanagement.hana.ondemand.com:443/ZGW_CREATE_PMO_SRV/WorkOrderSet"
     url = url + "?$filter=Response eq '" + Status + "'&$format=json&$orderby=WoNum desc"
 
-    hdr = {'Authorization': 'Basic cm5haXJhbmQ6ZmQ0Njg4NQ=='}
+    hdr = {'Authorization': auth_cred}
     r = requests.get(url, headers = hdr)
 
     if r.status_code != 200:
