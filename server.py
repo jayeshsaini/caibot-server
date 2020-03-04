@@ -201,7 +201,7 @@ def startkit():
     payload = {
         'text': 'fan'
     }
-    url = 'https://fastdigital.tunnel.datahub.at/fan-fail'
+    url = 'http://fastdigital.serverless.social/fan-fail'
     headers = {'Content-Type': 'application/json'}
         
     try:
